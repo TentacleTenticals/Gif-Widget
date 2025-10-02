@@ -47,6 +47,7 @@ export default class {
       }
     }
   };
+  code = (o) => this.urlsGen.firebase.code(o);
   token = (o) => {
     o.secrets?.url && (o.proxyUrl = o.secrets.url);
     o.method = 'POST';
