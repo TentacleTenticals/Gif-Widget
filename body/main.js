@@ -187,6 +187,7 @@ export default (o) => class {
     classes: ['Gif-Widget', (o.cfg.theme||'dark')+'-theme', 'flx', 'ver'],
     attr: ['theme', 'dark'],
     showM: true,
+    autoClose: true,
     func: async (body) => {
   
       El.Div({
@@ -197,7 +198,8 @@ export default (o) => class {
             path: h,
             text: this.lang[o.cfg.lang].main[0]
           });
-        }
+        },
+        onclick: () => body.remove()
       });
       El.Div({
         path: body,
