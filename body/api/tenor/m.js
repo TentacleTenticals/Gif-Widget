@@ -697,6 +697,25 @@ export default (that, o) => class extends Main(o) {
                 url: item.media_formats.gifpreview.url,
                 onclick: async () => {
                   console.log('RRRRRR');
+                  const history = await new Fb().history.get.all(o.db);
+                  console.log('His', history, history.length+1 > o.cfg.history.limit);
+
+                  navigator.clipboard.writeText(new Tenor().formats(item.realName, item.realID, o.cfg.main.return.format));
+                  const getOldest = (data) => {
+                    let large = {};
+                    data.forEach(item => {
+                      item.sec = Date.parse(item.createTime);
+                    });
+                    data.forEach(item => {
+                      if(!large.sec) large = item;
+                      if(item.sec < large.sec) large = item;
+                    });
+                    return large;
+                  }
+                  if(history.length+1 > o.cfg.history.limit) await new Fb().history.remove.item({
+                    ...o.db,
+                    name: getOldest(history).fields.id.stringValue
+                  });
                   new Fb().history.add.item({
                     ...o.db,
                     name: item.realID,
