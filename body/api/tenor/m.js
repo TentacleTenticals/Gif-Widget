@@ -4,6 +4,7 @@ import {default as Fb} from '../../../api/tenor/db/m.js';
 import {default as Main} from '../../main.js';
 
 export default (that, o) => class extends Main(o) {
+  writeUrl = (name, id, format) => navigator.clipboard.writeText(new Tenor().formats(name, id, format));
   _ = {
     lang: {
       en: {
@@ -21,6 +22,9 @@ export default (that, o) => class extends Main(o) {
           go: ['Search', 'Srch', 'S', 'Search'],
           prev: ['Prev', 'Prv', 'P', 'Prev'],
           next: ['Next', 'Nxt', 'N', 'Next'],
+          menu: {
+            addToCol: ['Add to Collection', 'Add to Col', 'Add tocol', 'Add to Collection']
+          }
         },
         collections: {
           main: ['Collections', 'Coll', 'C', 'Collections'],
@@ -682,10 +686,24 @@ export default (that, o) => class extends Main(o) {
                       path: p,
                       text: btn,
                       class: 'btn',
-                      onclick: () => {
+                      onclick: async () => {
                         console.log('Yo!', new Tenor().formats(item.realName, item.realID, btn));
                         window.focus();
-                        navigator.clipboard.writeText(new Tenor().formats(item.realName, item.realID, btn));
+                        this.writeUrl(item.realName, item.realID, btn);
+                        const history = await new Fb().history.get.all(o.db);
+                        if(history.length+1 > o.cfg.history.limit) await new Fb().history.remove.item({
+                          ...o.db,
+                          name: this.getOldest(history).fields.id.stringValue
+                        });
+                        new Fb().history.add.item({
+                          ...o.db,
+                          name: item.realID,
+                          doc: {
+                            name: item.realName,
+                            id: item.realID
+                          }
+                        });
+                        // navigator.clipboard.writeText(new Tenor().formats(item.realName, item.realID, btn));
                       }
                     });
                   });
@@ -696,25 +714,16 @@ export default (that, o) => class extends Main(o) {
                 class: 'media img',
                 url: item.media_formats.gifpreview.url,
                 onclick: async () => {
-                  console.log('RRRRRR');
+                  // console.log('RRRRRR');
                   const history = await new Fb().history.get.all(o.db);
-                  console.log('His', history, history.length+1 > o.cfg.history.limit);
+                  // console.log('His', history, history.length+1 > o.cfg.history.limit);
 
-                  navigator.clipboard.writeText(new Tenor().formats(item.realName, item.realID, o.cfg.main.return.format));
-                  const getOldest = (data) => {
-                    let large = {};
-                    data.forEach(item => {
-                      item.sec = Date.parse(item.createTime);
-                    });
-                    data.forEach(item => {
-                      if(!large.sec) large = item;
-                      if(item.sec < large.sec) large = item;
-                    });
-                    return large;
-                  }
+                  this.writeUrl(item.realName, item.realID, o.cfg.main.return.format);
+
+                  // navigator.clipboard.writeText(new Tenor().formats(item.realName, item.realID, o.cfg.main.return.format));
                   if(history.length+1 > o.cfg.history.limit) await new Fb().history.remove.item({
                     ...o.db,
-                    name: getOldest(history).fields.id.stringValue
+                    name: this.getOldest(history).fields.id.stringValue
                   });
                   new Fb().history.add.item({
                     ...o.db,
@@ -736,45 +745,45 @@ export default (that, o) => class extends Main(o) {
               e.preventDefault();
               if(e.currentTarget.getAttribute('menu-op')) return;
               e.target.setAttribute('menu-op', true);
-              const collection = await new Fb().collections.get.ids(o.db);
-              console.log('CL', collection);
+              // const collection = await new Fb().collections.get.ids(o.db);
+              // console.log('CL', collection);
               const test = await this.ctxMenu(e.target.parentNode);
 
+              // El.Button({
+              //   path: test,
+              //   text: 'new +',
+              //   class: 'btn',
+              //   onclick: () => {
+              //     this._.dialogs.add.item(item);
+              //   }
+              // });
               El.Button({
                 path: test,
-                text: 'new +',
-                class: 'btn',
-                onclick: () => {
-                  this._.dialogs.add.item(item);
-                }
-              });
-              El.Button({
-                path: test,
-                text: 'add to col',
+                text: this._.lang[o.cfg.lang].search.menu.addToCol[0],   //collection.dialogs.addToCol[0],
                 class: 'btn',
                 onclick: () => {
                   // console.log('TH', this.interfaces)
                   this._.interface.dialogs.collection.item.add(item); //dialogs.collection.item.add(item);
                 }
               });
-              collection.forEach(c => {
-                El.Button({
-                  path: test,
-                  text: c,
-                  class: 'btn',
-                  onclick: () => {
-                    new Fb().collections.add.item({
-                      ...o.db,
-                      group: c,
-                      name: item.realID,
-                      doc: {
-                        name: item.realName,
-                        id: item.realID
-                      }
-                    });
-                  }
-                });
-              });
+              // collection.forEach(c => {
+              //   El.Button({
+              //     path: test,
+              //     text: c,
+              //     class: 'btn',
+              //     onclick: () => {
+              //       new Fb().collections.add.item({
+              //         ...o.db,
+              //         group: c,
+              //         name: item.realID,
+              //         doc: {
+              //           name: item.realName,
+              //           id: item.realID
+              //         }
+              //       });
+              //     }
+              //   });
+              // });
               // console.log('TEST', test);
             }
             // onclick: async () => {
@@ -953,22 +962,6 @@ export default (that, o) => class extends Main(o) {
             }
           });
         }
-      }
-    },
-    search: {
-      menu: {
-      }
-    },
-    history: {
-      menu: {
-      }
-    },
-    collections: {
-      menu: {
-      }
-    },
-    collection: {
-      menu: {
       }
     }
   }
