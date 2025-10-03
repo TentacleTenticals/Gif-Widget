@@ -184,6 +184,7 @@ input {
     background-color: var(--bck-c);
 
     &[search] {
+      grid-template-columns: repeat(${o.search.items.inRow}, minmax(0, 100%));
       overflow-x: clip;
       overflow-y: auto;
       /* resize: unset; */
