@@ -1,45 +1,28 @@
-import {El} from '../base/class/m.js';
+import {default as Elm} from '../base/class/mjs.js';
 import {default as Tenor} from '../api/tenor/func.js';
-import {default as Fb} from '../api/firebase/func.js';
 
 import {default as ClsTenor} from './api/tenor/m.js';
 import {default as ClsDef} from './api/def/m.js';
 
-// const A = Base => (Base ? Base = Base : Base = class {}) && class extends Base {
-//   a = {};
-//   mal = () => console.log('Mal');
-// }
-
-// const B = Base => (Base ? Base = Base : Base = class {}) && class extends Base {
-//   b = {};
-//   ani = () => console.log('Ani');
-// }
-
-// const C = Base => (Base ? Base = Base : Base = class {}) && class extends Base {
-//   c = {};
-// }
-
-// class Di {
-//   di = {};
-// };
-
-// const ccc = [
-//   ClsTenor,
-//   // B,
-//   // C
-// ];
-
-// const lab = ccc.reduce((f2, f1) => x => class extends f1(f2(x)){});
-
-// console.log('Lab', new (lab())());
-
 export default (o) => class {
   el = {};
+  El = new Elm().i;
   history = [];
   api = {
     def: ClsDef,
     tenor: ClsTenor
   };
+  getOldest = (data) => {
+    let large = {};
+    data.forEach(item => {
+      item.sec = Date.parse(item.createTime);
+    });
+    data.forEach(item => {
+      if(!large.sec) large = item;
+      if(item.sec < large.sec) large = item;
+    });
+    return large;
+  }
   interface = {
     dialogs: {
       collection: {
@@ -52,14 +35,14 @@ export default (o) => class {
     },
     tags: (path) => new Promise((resp, error) => {
       const it = (form) => {
-        El.Input({
+        this.El('input', {
           path: form,
           class: 'it',
           label: true,
-          lClass: 'itm flx',
+          classL: 'itm flx',
           name: form.children.length+1,
-          func: (i) => {
-            El.Div({
+          funcL: (i) => {
+            this.El('div', {
               path: i,
               class: 'btn',
               text: 'x',
@@ -75,10 +58,11 @@ export default (o) => class {
         })
       };
 
-      El.Form({
+      this.El('form', {
         path: path,
         class: 'adder flx',
         name: 'tags',
+        text: 'Tags',
         func: (form) => {
           if(!form.children.length) it(form);
         },
@@ -111,18 +95,18 @@ export default (o) => class {
   };
   ctxMenu = (path, items) => {
     return new Promise((response, error) => {
-      El.Div({
+      this.El('div', {
         path: path,
         class: 'item-menu flx ver',
         tab: '-1',
         func: (menu) => {
           menu.focus();
-          El.Div({
+          this.El('div', {
             path: menu,
             class: 'header',
             text: 'MENU'
           });
-          El.Div({
+          this.El('div', {
             path: menu,
             class: 'list flx ver',
             // rtn: true,
@@ -145,7 +129,7 @@ export default (o) => class {
       item: (api, type) => {
         const go = new (this.api[api[1]]({el:this.el, history:this.history, address:this.address, ctxMenu:this.ctxMenu}, o))();
         console.log('GO', go);
-        El.Button({
+        this.El('button', {
           path: this.el.address,
           classes: ['address-item', !type && 'n-'+api[0], 'flx'],
           attrs: [['api', api[1]]],
@@ -182,26 +166,26 @@ export default (o) => class {
     console.log(path);
     return path.filter(e => e).map(e => e.split('.')).flat().reduce((r, k) => k ? r[k] : r, t);
   };
-  main = () => El.Dialog({
+  main = () => this.El('dialog', {
     path: o.path,
     classes: ['Gif-Widget', (o.cfg.theme||'dark')+'-theme', 'flx', 'ver'],
     attr: ['theme', 'dark'],
     showM: true,
-    autoClose: true,
+    autoclose: true,
     func: async (body) => {
   
-      El.Div({
+      this.El('div', {
         path: body,
         class: 'header flx',
         func: (h) => {
-          El.Div({
+          this.El('div', {
             path: h,
             text: this.lang[o.cfg.lang].main[0]
           });
         },
         onclick: () => body.remove()
       });
-      El.Div({
+      this.El('div', {
         path: body,
         class: 'address-bar flx',
         func: (a) => {
@@ -209,7 +193,7 @@ export default (o) => class {
           this.address.get.all();
         }
       });
-      El.Div({
+      this.El('div', {
         path: body,
         class: 'menu flx ver',
         func: (m) => this.el.menu = m
