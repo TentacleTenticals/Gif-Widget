@@ -16,7 +16,7 @@ export default class {
           prompt: 'consent',
           response_type: 'code',
           redirect_uri: o.secrets.redirectUri,
-          client_id: o.secrets.googleID,
+          client_id: o.secrets.clientID,
           scope: 'https://www.googleapis.com/auth/datastore'
         }
         for(const param in params){
