@@ -28,6 +28,18 @@ input {
   outline: none;
 }
 
+.gap5 {
+  gap: 0 5px;
+
+  select {
+    width: 100%;
+  }
+}
+
+.form-list {
+  gap: 5px 0;
+}
+
 .adder {
   gap: 0 10px;
   
