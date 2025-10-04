@@ -1,7 +1,8 @@
 import {El} from '../../../base/class/m.js';
 import {default as Tenor} from '../tenor/m.js';
+import {default as Main} from '../../main.js';
 
-export default (that, o) => class {
+export default (that, o) => class extends Main(o) {
   _ = {
     lang: {
       en: {
@@ -22,11 +23,11 @@ export default (that, o) => class {
         that.address.current = name;
         that.address.list = [name];
         that.address.get.all();
-        El.Div({
+        this.El('div', {
           path: that.el.menu,
           class: 'header menu-header flx',
           func: (h) => {
-            El.Div({
+            this.El('div', {
               path: h,
               class: 'item',
               // attrs: [['api', name[1]]],
@@ -34,12 +35,12 @@ export default (that, o) => class {
             });
           }
         });
-        El.Div({
+        this.El('div', {
           path: that.el.menu,
           class: 'menu-items-list',
           func: (h) => {
             o.cfg.api.list.forEach(api => {
-              El.Button({
+              this.El('button', {
                 path: h,
                 classes: ['api', 'n-'+api],
                 text: api.toUpperCase(),
