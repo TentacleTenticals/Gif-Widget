@@ -47,38 +47,39 @@ export default (that, o) => class extends Main(o) {
           item: {
             add: (item) => {
               console.log('yyys')
-              El.Dialog({
+              this.El('dialog', {
                 path: document.body,
                 showM: true,
                 func: (dia) => {
-                  El.Div({
+                  this.El('div', {
                     path: dia,
                     class: 'header',
                     text: 'HEAD'
                   });
-                  El.Form({
+                  this.El('form', {
                     path: dia,
-                    class: 'list flx ver',
+                    class: 'form-list flx ver',
                     func: async (list) => {
                       const collections = await new Fb().collections.get.ids(o.db);
                       console.log('coco', collections.map(e => [e, e]))
-                      El.Input({
+                      this.El('input', {
                         path: list,
-                        class: 'label',
-                        label: 'Name',
-                        lClass: '',
+                        label: true,
+                        classL: 'gap5 flx',
+                        textL: 'Name',
                         name: 'name'
                       });
-                      El.Select({
+                      this.El('select', {
                         path: list,
-                        class: 'label',
-                        label: 'Group',
-                        lClass: '',
+                        label: true,
+                        classL: 'gap5 flx',
+                        textL: 'Group',
+                        // class: 'label',
                         name: 'group',
-                        options: collections.map(e => [e, e])
+                        options: collections.map(e => ({values:[e, e]}))
                       });
                       await this.interface.tags(list);
-                      El.Input({
+                      this.El('input', {
                         path: list,
                         class: 'btn',
                         value: 'Test',
@@ -121,10 +122,7 @@ export default (that, o) => class extends Main(o) {
                       })
                     }
                   });
-                },
-                // onkeydown: (e) => {
-                //   if(e.key === 'Enter') e.preventDefault();
-                // }
+                }
               })
             }
           }
@@ -138,12 +136,12 @@ export default (that, o) => class extends Main(o) {
             path: document.body,
             showM: true,
             func: (dia) => {
-              El.Div({
+              this.El('div', {
                 path: dia,
                 class: 'header',
                 text: 'HEAD'
               });
-              El.Form({
+              this.El('form', {
                 path: dia,
                 class: 'list flx ver',
                 func: (list) => {
@@ -192,16 +190,16 @@ export default (that, o) => class extends Main(o) {
             path: document.body,
             showM: true,
             func: (dia) => {
-              El.Div({
+              this.El('div', {
                 path: dia,
                 class: 'header',
                 text: this._.lang[o.cfg.lang].collections.collection.dialogs.remove.header[0]
               });
-              El.Form({
+              this.El('form', {
                 path: dia,
                 class: 'list flx ver',
                 func: (list) => {
-                  El.Div({
+                  this.El('div', {
                     path: list,
                     class: 'r',
                     text: item
@@ -237,11 +235,11 @@ export default (that, o) => class extends Main(o) {
         that.address.list = [['home', 'def'], name];
         that.address.get.all();
         // this._.address.list = ['home'];
-        El.Div({
+        this.El('div', {
           path: that.el.menu,
           class: 'header menu-header flx',
           func: (h) => {
-            El.Div({
+            this.El('div', {
               path: h,
               class: 'item',
               // attrs: [['api', name[1]]],
@@ -249,11 +247,11 @@ export default (that, o) => class extends Main(o) {
             });
           }
         });
-        El.Div({
+        this.El('div', {
           path: that.el.menu,
           class: 'menu-items-list',
           func: (h) => {
-            El.Button({
+            this.El('button', {
               path: h,
               classes: ['api', 'n-'+name[1]],
               text: this._.lang[o.cfg.lang].search.main[0],
@@ -262,7 +260,7 @@ export default (that, o) => class extends Main(o) {
                 this._.menu.search();
               }
             });
-            El.Button({
+            this.El('button', {
               path: h,
               classes: ['api', 'n-'+name[1]],
               text: this._.lang[o.cfg.lang].collections.main[0],
@@ -271,7 +269,7 @@ export default (that, o) => class extends Main(o) {
                 this._.menu.collections();
               }
             });
-            El.Button({
+            this.El('button', {
               path: h,
               classes: ['api', 'n-'+name[1]],
               text: this._.lang[o.cfg.lang].history.main[0],
@@ -291,11 +289,11 @@ export default (that, o) => class extends Main(o) {
         that.address.current = name;
         that.address.list = [['home', 'def'], ['home', 'tenor'], name];
         that.address.get.all();
-        El.Div({
+        this.El('div', {
           path: that.el.menu,
           class: 'header menu-header flx',
           func: (h) => {
-            El.Div({
+            this.El('div', {
               path: h,
               class: 'item',
               // attrs: [['api', name[1]]],
@@ -303,11 +301,11 @@ export default (that, o) => class extends Main(o) {
             });
           }
         });
-        El.Div({
+        this.El('div', {
           path: that.el.menu,
           class: 'menu-items-list flx',
           func: (h) => {
-            El.Div({
+            this.El('div', {
               path: h,
               class: 'main-list flx ver',
               func: (l) => {
@@ -341,21 +339,21 @@ export default (that, o) => class extends Main(o) {
                     });
                   },
                   func: (i) => {
-                    El.Div({
+                    this.El('div', {
                       path: i,
                       class: 'btns flx',
                       func: (p) => {
-                        El.Button({
+                        this.El('button', {
                           path: p,
                           class: 'n-upd btn',
                           text: this._.lang[o.cfg.lang].search.go[0],
                           onclick: async () => {
                             console.log('V', that.el);
-                            console.log('Find', find())
+                            console.log('Find', i.value)
                             items = await new Tenor()._.search.gif({
                               search: {
                                 ...o.search,
-                                text: i.value,
+                                text: i.children[0].value,
                                 // pos: find()
                               },
                               secrets: o.secrets
@@ -372,7 +370,7 @@ export default (that, o) => class extends Main(o) {
                             });
                           }
                         })
-                        El.Button({
+                        this.El('button', {
                           path: p,
                           class: 'n-upd btn',
                           text: this._.lang[o.cfg.lang].search.next[0],
@@ -381,7 +379,7 @@ export default (that, o) => class extends Main(o) {
                             items = await new Tenor()._.search.gif({
                               search: {
                                 ...o.search,
-                                text: i.value,
+                                text: i.children[0].value,
                                 pos: next
                               },
                               secrets: o.secrets
@@ -403,7 +401,7 @@ export default (that, o) => class extends Main(o) {
                     });
                   }
                 });
-                El.Div({
+                this.El('div', {
                   path: l,
                   class: 'preview flx',
                   func: (p) => {
@@ -419,7 +417,7 @@ export default (that, o) => class extends Main(o) {
                     });
                   }
                 });
-                El.Div({
+                this.El('div', {
                   path: l,
                   attrs: [name],
                   classes: ['list', 'items-list'],
@@ -439,11 +437,11 @@ export default (that, o) => class extends Main(o) {
         that.address.list = [['home', 'def'], ['home', 'tenor'], name];
         that.address.get.all();
         const history = await new Fb().history.get.all(o.db);
-        El.Div({
+        this.El('div', {
           path: that.el.menu,
           class: 'header menu-header flx',
           func: (h) => {
-            El.Div({
+            this.El('div', {
               path: h,
               class: 'item',
               // attrs: [['api', name[1]]],
@@ -451,11 +449,11 @@ export default (that, o) => class extends Main(o) {
             });
           }
         });
-        El.Div({
+        this.El('div', {
           path: that.el.menu,
           class: 'menu-items-list flx',
           func: (h) => {
-            El.Div({
+            this.El('div', {
               path: h,
               class: 'main-list flx ver',
               func: (l) => {
@@ -480,7 +478,7 @@ export default (that, o) => class extends Main(o) {
                     })
                   }
                 });
-                El.Div({
+                this.El('div', {
                   path: l,
                   class: 'preview flx',
                   func: (p) => {
@@ -498,7 +496,7 @@ export default (that, o) => class extends Main(o) {
                     });
                   }
                 });
-                El.Div({
+                this.El('div', {
                   path: l,
                   class: 'list items-list',
                   func: (e) => {
@@ -523,11 +521,11 @@ export default (that, o) => class extends Main(o) {
         that.address.get.all();
         const collections = await new Fb().collections.get.ids(o.db);
         console.log('COLLECTIONS', collections);
-        El.Div({
+        this.El('div', {
           path: that.el.menu,
           class: 'header menu-header flx',
           func: (h) => {
-            El.Div({
+            this.El('div', {
               path: h,
               class: 'item',
               // attrs: [['api', name[1]]],
@@ -535,7 +533,7 @@ export default (that, o) => class extends Main(o) {
             });
           }
         });
-        El.Div({
+        this.El('div', {
           path: that.el.menu,
           class: 'menu-items-list',
           func: (h) => {
@@ -591,11 +589,11 @@ export default (that, o) => class extends Main(o) {
             // });
           },
           func: (i) => {
-            El.Div({
+            this.El('div', {
               path: i.parentElement,
               class: 'btns flx',
               func: (p) => {
-                El.Button({
+                this.El('button', {
                   path: p,
                   class: 'n-upd btn',
                   text: this._.lang[o.cfg.lang].search.go[0],
@@ -627,7 +625,7 @@ export default (that, o) => class extends Main(o) {
           }
         });
   
-        El.Div({
+        this.El('div', {
           path: that.el.menu,
           class: 'preview flx',
           func: (p) => {
@@ -645,11 +643,11 @@ export default (that, o) => class extends Main(o) {
             });
           }
         });
-        El.Div({
+        this.El('div', {
           path: that.el.menu,
           class: 'header menu-header flx',
           func: (h) => {
-            El.Div({
+            this.El('div', {
               path: h,
               class: 'item',
               // attrs: [['api', name[1]]],
@@ -658,7 +656,7 @@ export default (that, o) => class extends Main(o) {
           }
         });
   
-        El.Div({
+        this.El('div', {
           path: that.el.menu,
           class: 'list items-list',
           func: (e) => {
@@ -672,17 +670,17 @@ export default (that, o) => class extends Main(o) {
       },
       items: {
         search: (path, el, item) => {
-          El.Div({
+          this.El('div', {
             path: path,
             class: 'mask flx',
             attr: ['item-id', item.id],
             func: (m) => {
-              El.Div({
+              this.El('div', {
                 path: m,
                 class: 'panel flx',
                 func: (p) => {
                   o.cfg.api.tenor.item.panel.buttons.forEach(btn => {
-                    El.Button({
+                    this.El('button', {
                       path: p,
                       text: btn,
                       class: 'btn',
@@ -741,7 +739,7 @@ export default (that, o) => class extends Main(o) {
               // el.preview.src = item.media_formats.mp4.url;
               this.setPreview(that.el, item.realName, item.realID);
             },
-            onRclick: async (e) => {
+            onrclick: async (e) => {
               e.preventDefault();
               if(e.currentTarget.getAttribute('menu-op')) return;
               e.target.setAttribute('menu-op', true);
@@ -749,7 +747,7 @@ export default (that, o) => class extends Main(o) {
               // console.log('CL', collection);
               const test = await this.ctxMenu(e.target.parentNode);
 
-              // El.Button({
+              // this.El('button', {
               //   path: test,
               //   text: 'new +',
               //   class: 'btn',
@@ -757,7 +755,7 @@ export default (that, o) => class extends Main(o) {
               //     this._.dialogs.add.item(item);
               //   }
               // });
-              El.Button({
+              this.El('button', {
                 path: test,
                 text: this._.lang[o.cfg.lang].search.menu.addToCol[0],   //collection.dialogs.addToCol[0],
                 class: 'btn',
@@ -767,7 +765,7 @@ export default (that, o) => class extends Main(o) {
                 }
               });
               // collection.forEach(c => {
-              //   El.Button({
+              //   this.El('button', {
               //     path: test,
               //     text: c,
               //     class: 'btn',
@@ -804,17 +802,17 @@ export default (that, o) => class extends Main(o) {
           });
         },
         history: (path, el, item) => {
-          El.Div({
+          this.El('div', {
             path: path,
             class: 'mask flx',
             attr: ['item-id', item.id.stringValue],
             func: (m) => {
-              El.Div({
+              this.El('div', {
                 path: m,
                 class: 'panel flx',
                 func: (p) => {
                   o.cfg.api.tenor.item.panel.buttons.forEach(btn => {
-                    El.Button({
+                    this.El('button', {
                       path: p,
                       text: btn,
                       class: 'btn',
@@ -851,7 +849,7 @@ export default (that, o) => class extends Main(o) {
           });
         },
         collections: (path, item) => {
-          El.Button({
+          this.El('button', {
             path: path,
             class: 'api n-tenor',
             text: item,
@@ -859,31 +857,29 @@ export default (that, o) => class extends Main(o) {
               that.el.menu.replaceChildren();
               this._.menu.collection(item);
             },
-            onRclick: (e) => {
+            onrclick: (e) => {
               e.preventDefault();
               this._.dialogs.remove.collection(item);
             }
           });
         },
         collection: (path, colName, item) => {
-          // path.replaceChildren();
           console.log('CC', item);
-          El.Div({
+          this.El('div', {
             path: path,
             class: 'mask flx',
             attr: ['item-id', item.id.stringValue],
             func: (m) => {
-              El.Div({
+              this.El('div', {
                 path: m,
                 class: 'panel flx',
                 func: (p) => {
                   o.cfg.api.tenor.item.panel.buttons.forEach(btn => {
-                    El.Button({
+                    this.El('button', {
                       path: p,
                       text: btn,
                       class: 'btn',
                       onclick: () => {
-                        // console.log('Yo!', new Tenor().formats(item.name.stringValue, item.id.stringValue, btn));
                         window.focus();
                         navigator.clipboard.writeText(new Tenor().formats(item.name.stringValue, item.id.stringValue, btn));
                       }
@@ -898,12 +894,9 @@ export default (that, o) => class extends Main(o) {
               });
             },
             onmouseenter: () => {
-              // console.log('ENTER', item, that);
-              // if(that.el.preview.src.match(item.id.stringValue)) return;
-              // that.el.preview.src = new Tenor().formats(item.name.stringValue, item.id.stringValue, 'mp4');
               this.setPreview(that.el, item.name.stringValue, item.id.stringValue);
             },
-            onRclick: async (e) => {
+            onrclick: async (e) => {
               e.preventDefault();
               if(e.currentTarget.getAttribute('menu-op')) return;
               e.target.setAttribute('menu-op', true);
@@ -911,7 +904,7 @@ export default (that, o) => class extends Main(o) {
               console.log('CL', collections, item);
               const test = await this.ctxMenu(e.target.parentNode);
 
-              El.Button({
+              this.El('button', {
                 path: test,
                 text: 'new +',
                 class: 'btn',
@@ -919,7 +912,7 @@ export default (that, o) => class extends Main(o) {
                   this._.dialogs.add.item(item);
                 }
               });
-              El.Button({
+              this.El('button', {
                 path: test,
                 text: 'del -',
                 class: 'btn',
@@ -937,11 +930,10 @@ export default (that, o) => class extends Main(o) {
                   if(collection) collection.forEach(item => {
                     this._.menu.items.collection(path, colName, item.fields);
                   });
-                  // this._.menu.collection(colName);
                 }
               });
               collections.forEach(c => {
-                El.Button({
+                this.El('button', {
                   path: test,
                   text: c,
                   class: 'btn',
@@ -958,7 +950,6 @@ export default (that, o) => class extends Main(o) {
                   }
                 });
               });
-              // console.log('TEST', test);
             }
           });
         }
