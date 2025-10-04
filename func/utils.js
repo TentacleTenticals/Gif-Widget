@@ -1,5 +1,78 @@
-export class Ut{
+export default class {
   getType = (o) => o && o.constructor.toString().split(/[\(\) ]/)[1];
+  log = function(text, col, val){
+    function color() {
+      switch(col){
+        case 'green': return 'bada55';
+        case 'red': return 'ff4500';
+        case 'cyan': return '00ffff';
+        case 'dodger': return '1e90ff';
+        case 'orchid': return 'da70d6';
+      }
+    }
+    console.log('%c '+text, 'background: #222; color: '+'#'+color(), val||'');
+  };
+  ProxyHandler = (upd, e) => {
+    return {
+      set(target, key, value) {
+        // if (value !== target[key]) {
+          // console.log(`Setting ${key} to ${value}`);
+          target[key] = value;
+          upd(key, value, e);
+          return true;
+        // }
+        // return true;
+      }
+    }
+  };
+  css = {
+    check: (name, path) => {
+      for(let i = 0, arr = (path||document).querySelectorAll(`style`); i < arr.length; i++){
+        if(!arr[i].getAttribute('stylename')) continue;
+        if(arr[i].getAttribute('stylename') === name) return true;
+      }
+    },
+    add: (name, css, path, check) => {
+      if(check && this.css.check(name)) return;
+      const main= document.createElement('style');
+      main.textContent = css;
+      if(name) main.setAttribute('stylename', name);
+      (path||document.body).appendChild(main);
+    }
+  };
+  Obs = ({obs, target, cfg, mode, check, type, search, name, msg, func}) => {
+    if(!target) return;
+    if(mode === 'start'){
+      this.callback = (mutationList, o) => {
+        for(const mutation of mutationList){
+          if(mutation.type === 'childList'){
+            // console.log(mutation.target);
+            if(check){
+              if(!mutation.target.classList.length > 0) return;
+              if(!mutation.target.classList.value.match(search)) return;
+            }
+            if(type){
+              func(mutation.target);
+            }else{
+              for(let i = 0, arr = mutation.addedNodes; i < arr.length; i++){
+                func(arr[i]);
+              }
+            }
+          }
+        }
+      };
+      obs[name] = new MutationObserver(this.callback);
+      obs[name].observe(target, cfg);
+      console.log(`[OBS ${name}] запущен`);
+    }else
+    if(mode === 'restart'){
+      if(obs[name]){
+        obs[name].disconnect();
+        obs[name].observe(target, cfg);
+        console.log(`[OBS ${name}] перезапущен`);
+      }
+    }
+  };
   object = {
     length: (obj) => Object.keys(obj).length
   };
