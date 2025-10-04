@@ -124,14 +124,7 @@ export default class {
         }
       },
       item: (o) => {
-        `curl --request POST \
-        'https://firestore.googleapis.com/v1/projects/database-f4d24/databases/(default)/documents/gifer/tenor/main/groups:runQuery?key=[YOUR_API_KEY]' \
-        --header 'Authorization: Bearer [YOUR_ACCESS_TOKEN]' \
-        --header 'Accept: application/json' \
-        --header 'Content-Type: application/json' \
-        --data '{"structuredQuery":{"from":[{"collectionId":"Loli laugh"}],"where":{"fieldFilter":{"field":{"fieldPath":"tags"},"op":"ARRAY_CONTAINS_ANY","value":{"arrayValue":{"values":[{"stringValue":"loli"}]}}}}}}' \
-        --compressed
-        `
+        
         return this.Firebase.doc.get({
           db: o.secrets.db,
           path: 'gifer/tenor/main/groups',
