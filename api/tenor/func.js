@@ -1,4 +1,3 @@
-import {Ut} from '../../func/utils.js';
 import {default as Tenor} from './m.js';
 
 export default class extends Tenor {
@@ -9,11 +8,8 @@ export default class extends Tenor {
           res => {
             if(!res) return;
             if(!res.results) return;
-            console.log('rrr', res)
-
-            // console.log('TEST', res.results[0].media_formats.gif);
-            // console.log('FEST', this.formats(res.results[0].media_formats.gif.url, 'gif'));
-            // console.log('FEST', this.formats(res.results[0].media_formats.gif.url, 'img nano'));
+            console.log('rrr', res);
+            
             if(res.results) res.results.forEach(e => {
               const data = this.getID(e.media_formats.gif.url);
               e.realName = data.name;
