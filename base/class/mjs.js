@@ -1,4 +1,19 @@
 export default class {
+  css = {
+    check: (name, path) => {
+      for(let i = 0, arr = (path||document).querySelectorAll(`style`); i < arr.length; i++){
+        if(!arr[i].getAttribute('stylename')) continue;
+        if(arr[i].getAttribute('stylename') === name) return true;
+      }
+    },
+    add: (o) => {
+      if(o.check && this.css.check(o.name, o.path)) return;
+      const main = document.createElement('style');
+      main.textContent = o.css;
+      if(o.name) main.setAttribute('stylename', o.name);
+      (o.path||document.body).appendChild(main);
+    }
+  };
   Base = {
     default: (o, main) => {
       if(o.class) main.className = o.class;
@@ -130,6 +145,9 @@ export default class {
       this.Events.default(o, main);
       this.Append.default(o, main);
     },
+    css: (o, main) => {
+      this.css.add(o, main);
+    },
     list: (o, main) => {
       this.Base.default(o, main);
       this.Events.default(o, main);
@@ -193,6 +211,8 @@ export default class {
     const main=document.createElement(type);
 
     switch(type){
+      // case 'css': this.Funcs.css(o, main);
+      // break;
       case 'a': this.Funcs.a(o, main);
       break;
       case 'ul': this.Funcs.list(o, main);
