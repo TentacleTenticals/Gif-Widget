@@ -1,4 +1,4 @@
-import {Ut} from '../../../func/utils.js';
+import {default as Ut} from '../../../func/utils.js';
 
 export default class {
   urls = {
@@ -16,7 +16,7 @@ export default class {
           prompt: 'consent',
           response_type: 'code',
           redirect_uri: o.secrets.redirectUri,
-          client_id: o.secrets.clientID,
+          client_id: o.secrets.googleID,
           scope: 'https://www.googleapis.com/auth/datastore'
         }
         for(const param in params){
@@ -49,7 +49,7 @@ export default class {
   };
   code = (o) => this.urlsGen.firebase.code(o);
   token = (o) => {
-    o.secrets?.url && (o.proxyUrl = o.secrets.proxyUrl);
+    o.secrets?.url && (o.proxyUrl = o.secrets.url);
     o.method = 'POST';
 
     o.url = this.urls.oauth.token;
