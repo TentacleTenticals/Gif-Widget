@@ -1,6 +1,4 @@
-import {Ut} from '../../func/utils.js';
-
-'https://tenor.googleapis.com/v2/search?q=excited&key=API_KEY&client_key=my_test_app&limit=8'
+import {default as Ut} from '../../func/utils.js';
 
 export default class {
   url = 'https://tenor.googleapis.com/v2/';
@@ -75,7 +73,6 @@ export default class {
     return data;
   };
   formats = (name, id, type) => {
-    const lll = 'https://media.tenor.com/Vo3CcpuPFYwAAAAe/teehee-funny.png';
     const formats = {
       gif: ['gif', 'gif', 'AC'],
       img: ['gifpreview', 'png', 'Ae'],
@@ -97,22 +94,6 @@ export default class {
         webm: ['tinywebm', 'webm', 'P3']
       }
     };
-    // const typer = (url, type) => {
-    //   const gp = (t, path) => {
-    //     console.log('Path', path);
-    //     return path.split('.').reduce((r, k) => k ? r[k] : r, t);
-    //   };
-    //   const regex = /https:\/\/[^/]+\/(?<id>[^/]+)\/(?<name>[^/]+)\..+/gm;
-    //   const data = {};
-    //   url.replace(regex, (_, id, name) => {
-    //     if(id){
-    //       data.id = id.slice(0, -2);
-    //       // data.type = id.slice(id.length-2);
-    //     }
-    //     if(name) data.name = name;
-    //   });
-    //   return [this.mediaUrl, data.id, gp(formats, type)[2], '/', data.name, '.', gp(formats, type)[1]].join('');
-    // };
 
     const typer = (type) => {
       const gp = (t, path) => {
