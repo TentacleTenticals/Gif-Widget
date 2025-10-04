@@ -1,5 +1,4 @@
-import {El} from '../../base/class/m.js';
-import {Ut} from '../../func/utils.js';
+import {default as Ut} from '../../func/utils.js';
 import {default as Oauth} from '../google/oauth/m.js';
 
 export default class {
@@ -43,62 +42,6 @@ export default class {
     return url.join('/');
   };
   oauth = {
-    code: (o) => {
-      const url = new Oauth().urlsGen.firebase.code({
-        secrets: o.secrets
-      });
-      return new Promise((success, error) => {
-        El.Dialog({
-          path: document.body,
-          class: 'flx ver',
-          showM: true,
-          autoDel: true,
-          onclose: () => error('Closed!'),
-          func: (m) => {
-            El.Div({
-              path: m,
-              class: 'header',
-              text: '-'
-            });
-            El.Div({
-              path: m,
-              class: 'list flx ver',
-              func: (l) => {
-                El.Button({
-                  path: l,
-                  text: 'Auth',
-                  // func: (e) => this.el[api.name].btnLogin = e,
-                  onclick: () => {
-                    // const Mal = new MalApi();
-                    console.log('CLICK', url);
-                    // api.secrets.codeChall = Mal.fc.auth.cc(128);
-                    // const data = new Proxy({}, El.ProxyHandler(this.upd, api));
-                    const win = window.open(url);
-                    const receive = (msg) => {
-                      console.log('MSG', msg);
-          
-                      if(!msg.data) error('No data!!!');
-                      if(msg.data?.type && msg.data?.type === 'PREVIEW_INSTANTIATE_DIFF') return;
-                      console.log('Message from window!', msg.data);
-                      success(msg.data);
-                      // data.i = msg.data;
-                      {
-                        win?.postMessage({MSG:`Код получен, данная вкладка будет закрыта через 5 секунд`}, '*');
-                        setTimeout(() => {
-                          win && win?.postMessage({type:'close'}, '*');
-                          window.removeEventListener('message', receive);
-                        }, 5000);
-                      }
-                    };
-                    window.addEventListener('message', receive);
-                  }
-                });
-              }
-            });
-          }
-        });
-      });
-    },
     check: (o, err, func) => {
       switch(err){
         case 401:
@@ -614,14 +557,6 @@ export default class {
   collections = {
     collection: {
       remove: (o) => {
-        `curl --request POST \
-        'https://firestore.googleapis.com/v1/projects/database-f4d24/databases/(default):bulkDeleteDocuments?key=[YOUR_API_KEY]' \
-        --header 'Authorization: Bearer [YOUR_ACCESS_TOKEN]' \
-        --header 'Accept: application/json' \
-        --header 'Content-Type: application/json' \
-        --data '{"collectionIds":["ha"]}' \
-        --compressed
-        `
 
         o.method = 'POST';
         o.secrets?.proxyUrl && (o.proxyUrl = o.secrets.proxyUrl);
@@ -646,14 +581,6 @@ export default class {
       }
     },
     getAll: (o) => {
-      `curl --request POST \
-      'https://firestore.googleapis.com/v1/projects/database-f4d24/databases/(default)/documents/gifer/groups:listCollectionIds?key=[YOUR_API_KEY]' \
-      --header 'Authorization: Bearer [YOUR_ACCESS_TOKEN]' \
-      --header 'Accept: application/json' \
-      --header 'Content-Type: application/json' \
-      --data '{}' \
-      --compressed
-      `
 
       let q;
       o.secrets?.url && (o.proxyUrl = o.secrets.url);
@@ -721,7 +648,6 @@ export default class {
     }
   };
   formats = (url, type) => {
-    const lll = 'https://media.tenor.com/Vo3CcpuPFYwAAAAe/teehee-funny.png';
     const formats = {
       gif: ['gif', 'gif', 'AC'],
       img: ['gifpreview', 'png', 'Ae'],
