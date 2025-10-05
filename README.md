@@ -3,7 +3,7 @@
 В зависимости от указанных сайтов в теле скрипта и его настройках, виджет может использоваться на любом сайте, форуме или чате (если у него есть веб версия).
 ***
 
-[Скачать](https://raw.githubusercontent.com/TentacleTenticals/Gif-Widget/refs/heads/main/script.js)
+[Скачать](https://raw.githubusercontent.com/TentacleTenticals/Gif-Widget/refs/heads/main/script.user.js)
 
 На данный момент **не работает** в Discord. Чисто из за того, что виджет использует cdn для загрузки частей скрипта, а Discord блокирует их загрузку. Исправлю ли я? Не знаю.
 ***
