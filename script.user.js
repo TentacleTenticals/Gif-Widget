@@ -1,5 +1,6 @@
 // ==UserScript==
 // @name        Gif Widget
+// @description Скрипт для поиска гифок
 // @namespace   TentacleTenticals
 // @match       https://www.example.com/*
 // @match       https://dtf.ru/*
@@ -8,11 +9,11 @@
 // @noframes
 // @grant       GM.setValue
 // @grant       GM.getValue
-// @version     1.0
+// @version     1.0.9
 // @author      TentacleTenticals
 // @homepage    https://github.com/TentacleTenticals/-
-// @updateURL   -
-// @downloadURL -
+// @updateURL   https://raw.githubusercontent.com/TentacleTenticals/Gif-Widget/refs/heads/main/script.user.js
+// @downloadURL https://raw.githubusercontent.com/TentacleTenticals/Gif-Widget/refs/heads/main/script.user.js
 // @description 01.10.2025, 15:45:52
 // ==/UserScript==
 
@@ -39,37 +40,37 @@
   const config = {
     cfg: {
       main: {
-        hotkey: 'F5',
-        width: '370px',
+        hotkey: 'F1', /* Горячая клавиша вызова виджета */
+        width: '370px', /* Максимальная ширина виджета */
         return: {
-          format: 'mp4'
+          format: 'mp4' /* Стандартный формат выдачи ссылки при клике по итему */
         }
       },
-      theme: 'dark',
-      lang: 'en',
-      address: ['home', 'def'],
+      theme: 'dark', /* Цветовая тема (пока одна) */
+      lang: 'en', /* Язык виджета (пока один) */
+      address: ['home', 'def'], /* По идее должен устанавливать дефолтный адрес. НЕ ПРОВЕРЯЛОСЬ, не советую менять. Пока в разработке */
       preview: {
-        height: '200px',
-        type: 'gif tiny'
+        height: '200px', /* Ширина превью гифок */
+        type: 'gif tiny' /* Тип превью гифок. Советую использовать gif tiny, т.к. в хромиуме видео могут ломаться. В Firefox нормально */
       },
       itemsList: {
-        height: '200px'
+        height: '200px' /* Максимальная высота листа итемов */
       },
       search: {
         items: {
-          limit: 9,
-          inRow: 5
+          limit: 9, /* Максимальное кол-во итемов при поиске гифок */
+          inRow: 5 /* Максимум итемов в строке. Визуальное изменение */
         }
       },
       history: {
-        limit: 10
+        limit: 10 /* Лимит истории */
       },
       api: {
-        list: ['tenor'],
+        list: ['tenor'], /* Лист API. Не трогать */
         tenor: {
           item: {
             panel: {
-              buttons: ['mp4', 'gif']
+              buttons: ['mp4', 'gif'] /* Кнопки при наведении на заголовок итемов */
             }
           }
         }
@@ -78,34 +79,14 @@
     sites: [ // Список поддерживаемых сайтов
       {
         name:'example', links: [['example\.com/\\d+', 'main']], func: {
-          path:'#dle-content .content-block',
-          pathTitle: '#dle-content .content-block h3',
-          divRetry:{max:3},
-          timeout: 3000
-          // siteType: 'anime'
         },
         main: 'example\.com'
       },
       {
         name:'dtf', links: [['dtf\.ru/\\d+', 'main']], func: {
-          path:'#content .titleup',
-          pathTitle: '#content .titleup > *:nth-child(2)',
-          divRetry:{max:3},
-          timeout: 3000
-          // siteType: 'anime'
         },
         main: 'dtf\.ru'
 
-      },
-      {
-        name:'discord', links: [['discord\.com/\\d+', 'main']], func: {
-          path:'.media-content.paper > div',
-          pathTitle: '.page div>h2',
-          divRetry:{max:6},
-          timeout: 3000
-        },
-        main: 'discord\.com/.*',
-        spa: true
       }
     ]
   };
