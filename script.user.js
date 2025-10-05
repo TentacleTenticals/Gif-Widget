@@ -9,7 +9,7 @@
 // @noframes
 // @grant       GM.setValue
 // @grant       GM.getValue
-// @version     1.0.9
+// @version     1.0.10
 // @author      TentacleTenticals
 // @homepage    https://github.com/TentacleTenticals/-
 // @updateURL   https://raw.githubusercontent.com/TentacleTenticals/Gif-Widget/refs/heads/main/script.user.js
@@ -20,7 +20,7 @@
 (async () => {
   console.log('[Gif Widget]');
 
-  const version = '1.0.9';
+  const version = '1.0.10';
 
   const {path} = await import(`https://cdn.jsdelivr.net/gh/TentacleTenticals/Gif-Widget@${version}/path.js`);
   const El = (await import(`https://cdn.jsdelivr.net/gh/TentacleTenticals/Gif-Widget@${version}/base/class/mjs.js`)).default;
@@ -37,58 +37,71 @@
   let shadow;
 
   const config = {
-    cfg: {
-      main: {
-        hotkey: 'F1', /* Горячая клавиша вызова виджета */
-        width: '370px', /* Максимальная ширина виджета */
-        return: {
-          format: 'mp4' /* Стандартный формат выдачи ссылки при клике по итему */
+  cfg: {
+    main: {
+      hotkey: 'F1', /* Горячая клавиша вызова виджета */
+      width: '370px', /* Максимальная ширина виджета */
+      scroll: {
+        size: 'lite', /* Размер скроллбара */
+        thumb: {
+          color: 'rgb(120 200 120)' /* Цвет ползунка */
         }
       },
-      theme: 'dark', /* Цветовая тема (пока одна) */
-      lang: 'en', /* Язык виджета (пока один) */
-      address: ['home', 'def'], /* По идее должен устанавливать дефолтный адрес. НЕ ПРОВЕРЯЛОСЬ, не советую менять. Пока в разработке */
-      preview: {
-        height: '200px', /* Ширина превью гифок */
-        type: 'gif tiny' /* Тип превью гифок. Советую использовать gif tiny, т.к. в хромиуме видео могут ломаться. В Firefox нормально */
-      },
-      itemsList: {
-        height: '200px' /* Максимальная высота листа итемов */
-      },
-      search: {
-        items: {
-          limit: 10, /* Максимальное кол-во итемов при поиске гифок */
-          inRow: 5 /* Максимум итемов в строке. Визуальное изменение */
-        }
-      },
-      history: {
-        limit: 10 /* Лимит истории */
-      },
-      api: {
-        list: ['tenor'], /* Лист API. Не трогать */
-        tenor: {
-          item: {
-            panel: {
-              buttons: ['mp4', 'gif'] /* Кнопки при наведении на заголовок итемов */
-            }
+      return: {
+        format: 'mp4' /* Стандартный формат выдачи ссылки при клике по итему */
+      }
+    },
+    theme: 'dark', /* Цветовая тема (пока одна) */
+    lang: 'en', /* Язык виджета (пока один) */
+    address: ['home', 'def'], /* По идее должен устанавливать дефолтный адрес. НЕ ПРОВЕРЯЛОСЬ, не советую менять. Пока в разработке */
+    preview: {
+      height: '200px', /* Ширина превью гифок */
+      type: 'gif tiny' /* Тип превью гифок. Советую использовать gif tiny, т.к. в хромиуме видео могут ломаться. В Firefox нормально */
+    },
+    itemsList: {
+      height: '200px' /* Максимальная высота листа итемов */
+    },
+    search: {
+      items: {
+        limit: 10, /* Максимальное кол-во итемов при поиске гифок */
+        inRow: 5 /* Максимум итемов в строке. Визуальное изменение */
+      }
+    },
+    collection: {
+      items: {
+        inRow: 5 /* Максимум итемов в строке. Визуальное изменение */
+      }
+    },
+    history: {
+      items: {
+        inRow: 5 /* Максимум итемов в строке. Визуальное изменение */
+      }
+    },
+    api: {
+      list: ['tenor'], /* Лист API. Не трогать */
+      tenor: {
+        item: {
+          panel: {
+            buttons: ['mp4', 'gif'] /* Кнопки при наведении на заголовок итемов */
           }
         }
       }
-    },
-    sites: [ // Список поддерживаемых сайтов
-      {
-        name:'example', links: [['example\.com/\\d+', 'main']], func: {
-        },
-        main: 'example\.com'
+    }
+  },
+  sites: [ // Список поддерживаемых сайтов
+    {
+      name:'example', links: [['example\.com/\\d+', 'main']], func: {
       },
-      {
-        name:'dtf', links: [['dtf\.ru/\\d+', 'main']], func: {
-        },
-        main: 'dtf\.ru'
+      main: 'example\.com'
+    },
+    {
+      name:'dtf', links: [['dtf\.ru/\\d+', 'main']], func: {
+      },
+      main: 'dtf\.ru'
 
-      }
-    ]
-  };
+    }
+  ]
+};
 
   class Func {
     El = new El().i;
