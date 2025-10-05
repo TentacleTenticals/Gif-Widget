@@ -57,7 +57,7 @@
       },
       search: {
         items: {
-          limit: 9, /* Максимальное кол-во итемов при поиске гифок */
+          limit: 10, /* Максимальное кол-во итемов при поиске гифок */
           inRow: 5 /* Максимум итемов в строке. Визуальное изменение */
         }
       },
@@ -269,7 +269,7 @@
       new (Body({
         path: shadow,
         search: {
-          limit: config.cfg.search.item.limit
+          limit: config.cfg.search.items.limit
         },
         db: {
           db: secrets.db,
