@@ -3,6 +3,7 @@ export default (o) => `
   --bck-c: rgb(0 0 0);
   --bck-c-1: rgb(50 50 50);
   --bck-c-2: rgb(80 80 80);
+  --bck-c-3: rgb(58 21 85);
   --col: rgb(255 255 255);
   --col-1: rgb(155 155 255);
   --col-2: rgb(55 155 255);
@@ -24,11 +25,19 @@ export default (o) => `
   --font-8: "Mukta", sans-serif;
 }
 
+[scroll] {
+  &::-webkit-scrollbar-thumb {
+    background-color: ${o.main.scroll.thumb.color};
+  }
+}
+
 input {
   outline: none;
 }
 
 .gap5 {
+  flex-grow: 1;
+  justify-content: space-between;
   gap: 0 5px;
 
   select {
@@ -41,20 +50,30 @@ input {
 }
 
 .adder {
-  gap: 0 10px;
+  flex-grow: 1;
+  flex-wrap: wrap;
+  gap: 10px 10px;
   
   .itm {
     gap: 0 5px;
+    padding: 3px 5px 3px 5px;
+    border: 1px solid var(--bor-c);
+    border-radius: 2px;
 
     input {
       width: 40px;
+      border: unset;
+      background-color: var(--bck-c);
+      color: var(--col);
     }
 
     .btn {
       padding: 0 5px 0 5px;
       aspect-ratio: 1/1;
-      border: 1px solid rgb(0 0 0);
-      border-radius: 10px;
+      border: 1px solid var(--bor-c);
+      border-radius: 2px;
+      background-color: var(--bck-c);
+      color: var(--col);
     }
   }
 }
@@ -93,6 +112,34 @@ input {
   color: var(--col);
   background-color: var(--bck-c-1);
   border: 1px solid var(--bor-c-1);
+}
+
+.dialogus {
+  padding: 5px;
+  border: 1px solid var(--bor-c);
+  background-color: var(--bck-c);
+  color: var(--col);
+
+  .header {
+    text-align: center;
+  }
+
+  .form-list {
+    input {
+      padding: 5px;
+      border: 1px solid var(--bor-c);
+      background-color: var(--bck-c);
+      color: var(--col);
+      outline: none;
+    }
+    select {
+      padding: 5px;
+      border: 1px solid var(--bor-c);
+      background-color: var(--bck-c);
+      color: var(--col);
+      outline: none;
+    }
+  }
 }
 
 .Gif-Widget {
@@ -159,7 +206,7 @@ input {
     height: ${o.preview.height};
     aspect-ratio: 1/0.5;
     box-sizing: border-box;
-    background-color: var(--bck-c);
+    background-color: var(--bck-c-3);
 
     .media {
       margin: auto;
@@ -191,17 +238,20 @@ input {
     max-height: ${o.itemsList.height};
     gap: 5px 5px;
     padding: 5px;
+    box-sizing: border-box;
+    overflow-x: clip;
     overflow-y: auto;
     color: var(--col);
     background-color: var(--bck-c);
 
     &[search] {
       grid-template-columns: repeat(${o.search.items.inRow}, minmax(0, 100%));
-      overflow-x: clip;
-      overflow-y: auto;
-      /* resize: unset; */
-      /* width: 100%; */
-      box-sizing: border-box;
+    }
+    &[collection] {
+      grid-template-columns: repeat(${o.collection.items.inRow}, minmax(0, 100%));
+    }
+    &[history] {
+      grid-template-columns: repeat(${o.history.items.inRow}, minmax(0, 100%));
     }
 
     &:empty {
