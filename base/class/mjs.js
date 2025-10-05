@@ -64,7 +64,7 @@ export default class {
       this.Base.default(o, main);
       label && this.Base.label(o, label);
 
-      this.Append.label(o, main, label);
+      !label ? this.Append.default(o, main) : this.Append.label(o, main, label);
 
       // !label && this.Append.default(o, main);
       // label && this.Append.default(o, main);
@@ -116,6 +116,9 @@ export default class {
     }
   };
   Attrs = {
+    input: (o, main) => {
+      if(o.placeholder) main.placeholder;
+    },
     media: (o, main) => {
       if(o.url) main.src=o.url;
       if(o.autoplay) main.autoplay=o.autoplay;
@@ -127,6 +130,11 @@ export default class {
     img: (o, main) => {
       if(o.url) main.src=o.url;
       o.preload ? main.preload=o.preload : main.preload='none';
+    },
+    form: (o, main) => {
+      if(o.action) main.action=o.action;
+      if(o.onkeydown) main.onkeydown=o.onkeydown;
+      o.method ? main.method=o.method : main.method='dialog';
     },
     selection: (o, main) => {
       if(o.required) main.setAttribute('required', '');
@@ -153,6 +161,12 @@ export default class {
       this.Events.default(o, main);
       this.Build.List(o, main);
       // this.Append.default(o, main);
+    },
+    form: (o, main) => {
+      this.Base.default(o, main);
+      this.Attrs.form(o, main);
+      this.Events.default(o, main);
+      this.Append.default(o, main);
     },
     dialog: (o, main) => {
       this.Base.default(o, main);
@@ -216,6 +230,8 @@ export default class {
       case 'a': this.Funcs.a(o, main);
       break;
       case 'ul': this.Funcs.list(o, main);
+      break;
+      case 'form': this.Funcs.form(o, main);
       break;
       case 'dialog': this.Funcs.dialog(o, main);
       break;
