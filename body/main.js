@@ -41,6 +41,7 @@ export default (o) => class {
           label: true,
           classL: 'itm flx',
           name: form.children.length+1,
+          placeholder: 'tag',
           funcL: (i) => {
             this.El('div', {
               path: i,
@@ -168,8 +169,8 @@ export default (o) => class {
   };
   main = () => this.El('dialog', {
     path: o.path,
-    classes: ['Gif-Widget', (o.cfg.theme||'dark')+'-theme', 'flx', 'ver'],
-    attr: ['theme', 'dark'],
+    classes: ['Gif-Widget', 'flx', 'ver'],
+    attr: ['theme', o.cfg.theme],
     showM: true,
     autoclose: true,
     func: async (body) => {
