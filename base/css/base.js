@@ -18,20 +18,20 @@ export default () => `
   }
 }
 
-.scrol {
+[scroll] {
   &::-webkit-scrollbar-corner {
     background-color: unset;
   }
 
-  &.lite::-webkit-scrollbar {
+  &[scroll='lite']::-webkit-scrollbar {
     width: 2px;
     height: 2px;
   }
-  &.mid::-webkit-scrollbar {
+  &[scroll='mid']::-webkit-scrollbar {
     width: 4px;
     height: 4px;
   }
-  &.big::-webkit-scrollbar {
+  &[scroll='big']::-webkit-scrollbar {
     width: 6px;
     height: 6px;
   }
