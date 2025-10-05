@@ -49,6 +49,8 @@ export default (that, o) => class extends Main(o) {
               console.log('yyys')
               this.El('dialog', {
                 path: document.body,
+                class: 'dialogus flx ver',
+                attr: ['theme', o.cfg.theme],
                 showM: true,
                 func: (dia) => {
                   this.El('div', {
@@ -66,8 +68,9 @@ export default (that, o) => class extends Main(o) {
                         path: list,
                         label: true,
                         classL: 'gap5 flx',
-                        textL: 'Name',
-                        name: 'name'
+                        textL: 'Group name',
+                        name: 'name',
+                        placeholder: 'New group name'
                       });
                       this.El('select', {
                         path: list,
@@ -82,7 +85,7 @@ export default (that, o) => class extends Main(o) {
                       this.El('input', {
                         path: list,
                         class: 'btn',
-                        value: 'Test',
+                        value: 'Add/Update item',
                         type: 'submit',
                         onclick: async (e) => {
                           const results = {};
@@ -134,6 +137,8 @@ export default (that, o) => class extends Main(o) {
         item: (item) => {
           El.Dialog({
             path: document.body,
+            class: 'dialogus flx ver',
+            attr: ['theme', o.cfg.theme],
             showM: true,
             func: (dia) => {
               this.El('div', {
@@ -188,6 +193,8 @@ export default (that, o) => class extends Main(o) {
         collection: (item) => {
           El.Dialog({
             path: document.body,
+            class: 'dialogus flx ver',
+            attr: ['theme', o.cfg.theme],
             showM: true,
             func: (dia) => {
               this.El('div', {
@@ -250,6 +257,7 @@ export default (that, o) => class extends Main(o) {
         this.El('div', {
           path: that.el.menu,
           class: 'menu-items-list',
+          attr: ['scroll', o.cfg.main.scroll.size],
           func: (h) => {
             this.El('button', {
               path: h,
@@ -304,6 +312,7 @@ export default (that, o) => class extends Main(o) {
         this.El('div', {
           path: that.el.menu,
           class: 'menu-items-list flx',
+          attr: ['scroll', o.cfg.main.scroll.size],
           func: (h) => {
             this.El('div', {
               path: h,
@@ -419,7 +428,7 @@ export default (that, o) => class extends Main(o) {
                 });
                 this.El('div', {
                   path: l,
-                  attrs: [name],
+                  attrs: [name, ['scroll', o.cfg.main.scroll.size]],
                   classes: ['list', 'items-list'],
                   func: (e) => that.el.items = e
                 });
@@ -452,32 +461,12 @@ export default (that, o) => class extends Main(o) {
         this.El('div', {
           path: that.el.menu,
           class: 'menu-items-list flx',
+          attr: ['scroll', o.cfg.main.scroll.size],
           func: (h) => {
             this.El('div', {
               path: h,
               class: 'main-list flx ver',
               func: (l) => {
-                El.Input({
-                  path: l,
-                  func: (e) => that.el.search = e,
-                  onkeydown: async (e) => {
-                    if(e.key !== 'Enter') return;
-                    if(!e.target.value) return;
-                    const items = await new Tenor()._.search.gif({
-                      search: {
-                        ...o.search,
-                        text: e.target.value
-                      },
-                      secrets: o.secrets
-                    });
-                    console.log('ITEMS', items);
-  
-                    // el.items.replaceChildren();
-                    items.forEach(e => {
-                      this._.menu.items.history(that.el.items, that.el, e);
-                    })
-                  }
-                });
                 this.El('div', {
                   path: l,
                   class: 'preview flx',
@@ -499,6 +488,7 @@ export default (that, o) => class extends Main(o) {
                 this.El('div', {
                   path: l,
                   class: 'list items-list',
+                  attrs: [name, ['scroll', o.cfg.main.scroll.size]],
                   func: (e) => {
                     that.el.items = e;
                     if(history) history.forEach(item => {
@@ -536,6 +526,7 @@ export default (that, o) => class extends Main(o) {
         this.El('div', {
           path: that.el.menu,
           class: 'menu-items-list',
+          attrs: [name, ['scroll', o.cfg.main.scroll.size]],
           func: (h) => {
             collections.forEach(item => {
               this._.menu.items.collections(h, item);
@@ -659,6 +650,7 @@ export default (that, o) => class extends Main(o) {
         this.El('div', {
           path: that.el.menu,
           class: 'list items-list',
+          attrs: [['collection', 'tenor'], ['scroll', o.cfg.main.scroll.size]],
           func: (e) => {
             that.el.items = e;
             if(collection) collection.forEach(item => {
@@ -689,7 +681,7 @@ export default (that, o) => class extends Main(o) {
                         window.focus();
                         this.writeUrl(item.realName, item.realID, btn);
                         const history = await new Fb().history.get.all(o.db);
-                        if(history.length+1 > o.cfg.history.limit) await new Fb().history.remove.item({
+                        if(history.length+1 > o.cfg.history.items.limit) await new Fb().history.remove.item({
                           ...o.db,
                           name: this.getOldest(history).fields.id.stringValue
                         });
@@ -719,7 +711,7 @@ export default (that, o) => class extends Main(o) {
                   this.writeUrl(item.realName, item.realID, o.cfg.main.return.format);
 
                   // navigator.clipboard.writeText(new Tenor().formats(item.realName, item.realID, o.cfg.main.return.format));
-                  if(history.length+1 > o.cfg.history.limit) await new Fb().history.remove.item({
+                  if(history.length+1 > o.cfg.history.items.limit) await new Fb().history.remove.item({
                     ...o.db,
                     name: this.getOldest(history).fields.id.stringValue
                   });
@@ -900,16 +892,17 @@ export default (that, o) => class extends Main(o) {
               e.preventDefault();
               if(e.currentTarget.getAttribute('menu-op')) return;
               e.target.setAttribute('menu-op', true);
-              const collections = await new Fb().collections.get.ids(o.db);
-              console.log('CL', collections, item);
               const test = await this.ctxMenu(e.target.parentNode);
 
               this.El('button', {
                 path: test,
-                text: 'new +',
+                text: this._.lang[o.cfg.lang].search.menu.addToCol[0],   //collection.dialogs.addToCol[0],
                 class: 'btn',
                 onclick: () => {
-                  this._.dialogs.add.item(item);
+                  // console.log('TH', this.interfaces)
+                  this._.interface.dialogs.collection.item.add({
+                    realName: item.name.stringValue, realID:item.id.stringValue,
+                  }); //dialogs.collection.item.add(item);
                 }
               });
               this.El('button', {
@@ -932,24 +925,24 @@ export default (that, o) => class extends Main(o) {
                   });
                 }
               });
-              collections.forEach(c => {
-                this.El('button', {
-                  path: test,
-                  text: c,
-                  class: 'btn',
-                  onclick: () => {
-                    new Fb().collections.add.item({
-                      ...o.db,
-                      group: c,
-                      name: item.realID,
-                      doc: {
-                        name: item.realName,
-                        id: item.realID
-                      }
-                    });
-                  }
-                });
-              });
+              // collections.forEach(c => {
+              //   this.El('button', {
+              //     path: test,
+              //     text: c,
+              //     class: 'btn',
+              //     onclick: () => {
+              //       new Fb().collections.add.item({
+              //         ...o.db,
+              //         group: c,
+              //         name: item.realID,
+              //         doc: {
+              //           name: item.realName,
+              //           id: item.realID
+              //         }
+              //       });
+              //     }
+              //   });
+              // });
             }
           });
         }
