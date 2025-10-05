@@ -33,7 +33,6 @@
   // const {def} = await import(`https://cdn.jsdelivr.net/gh/TentacleTenticals/Gif-Widget@${version}/body/api.js`);
   // const {path} = await import(`https://cdn.jsdelivr.net/gh/TentacleTenticals/Gif-Widget@${version}/path.js`);
 
-  console.log('G', Google);
   let secretsList;
   let shadow;
 
@@ -270,13 +269,15 @@
       new (Body({
         path: shadow,
         search: {
-          limit: 9
+          limit: config.cfg.search.item.limit
         },
         db: {
-          db: '(default)',
+          db: secrets.db,
           secrets: secrets
         },
-        secrets: secretsList.tenor,
+        secrets: {
+          ...secretsList.tenor
+        },
         cfg: config.cfg
       }))().main();
     }
